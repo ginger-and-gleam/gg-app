@@ -33,6 +33,7 @@
   color-scheme:light; }
 
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 var(--body);-webkit-font-smoothing:antialiased;overscroll-behavior-y:none}
 #app{height:100%;display:flex;flex-direction:column}
@@ -44,7 +45,7 @@ header .sub{font-size:12px;color:var(--muted);margin-left:auto;display:flex;alig
 .dot.on{background:var(--good)} .dot.q{background:var(--warn)}
 main{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:16px max(16px,env(safe-area-inset-right,0px)) 24px max(16px,env(safe-area-inset-left,0px))}
 nav{display:grid;grid-template-columns:repeat(6,1fr);border-top:1px solid var(--line);background:var(--bg);padding:6px max(8px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(8px,env(safe-area-inset-left,0px))}
-nav button{background:none;border:0;color:var(--muted);font:11px var(--body);letter-spacing:.04em;text-transform:uppercase;padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:10px}
+nav button{background:none;border:0;color:var(--muted);font:10px var(--body);letter-spacing:.02em;text-transform:uppercase;padding:8px 2px;display:flex;flex-direction:column;align-items:center;gap:4px;border-radius:10px}
 nav button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
 nav button.on{color:var(--copper)}
 nav button:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid var(--copper);outline-offset:2px}
@@ -100,6 +101,17 @@ textarea{min-height:80px;resize:vertical}
 .photo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
 .photo-grid a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px;font-size:12px;color:var(--fg);text-decoration:none;min-height:70px}
 .photo-grid a span{display:block;color:var(--muted)}
+.gal-group{margin-bottom:18px}
+.gal-group h4{font:500 17px var(--display);margin:0 0 2px}
+.gal-group .d{font-size:12px;color:var(--muted);letter-spacing:.04em;text-transform:uppercase;margin:10px 0 6px}
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.gal a{display:block;position:relative;aspect-ratio:1;max-width:100%;border-radius:10px;overflow:hidden;background:var(--panel);border:1px solid var(--line);text-decoration:none;color:var(--fg)}
+.gal img{width:100%;height:100%;object-fit:cover;display:block}
+.gal .lbl{position:absolute;left:0;right:0;bottom:0;padding:6px 8px;font-size:11px;line-height:1.2;background:linear-gradient(transparent,rgba(28,27,26,.85));color:#F3EEE8}
+.gal .lbl b{display:block;font-size:11px;letter-spacing:.06em;text-transform:uppercase}
+.gal .before .lbl b{color:#E8C9A8} .gal .after .lbl b{color:#9AD4A4}
+.gal .nothumb{display:flex;flex-direction:column;justify-content:center;padding:10px;font-size:12px;color:var(--muted);height:100%}
+.gal .pend{position:absolute;top:6px;right:6px;width:8px;height:8px;border-radius:50%;background:var(--warn)}
 .toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:10px 16px;border-radius:999px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;text-align:center}
 .toast.show{opacity:1}
 .note{font-size:13px;color:var(--muted)}
@@ -115,7 +127,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <header>
   <img src="apple-touch-icon.png" alt="">
   <h1>Ginger &amp; Gleam</h1>
-  <div class="sub"><span class="dot" id="dot"></span><span id="syncLabel">Not connected</span></div>
+  <div class="sub"><span class="dot" id="dot"></span><span id="syncLabel">Not connected</span><button id="gear" aria-label="Setup" style="background:none;border:0;color:var(--muted);padding:4px;margin-left:6px"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg></button></div>
 </header>
 
 <main>
@@ -177,7 +189,7 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 <section class="screen" id="s-clients">
   <div id="cList">
     <h2>Clients</h2>
-    <p class="lead">Home notes and photos, one card per home.</p>
+    <p class="lead">Home notes, one card per home. Photos live in the Photos tab.</p>
     <button class="btn" id="cNew">Add a client</button>
     <h3>Your clients</h3>
     <div class="list" id="cItems"></div>
@@ -230,15 +242,8 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
     <div class="card" id="dNotes"></div>
 
     <h3>Before &amp; after photos</h3>
-    <p class="note">Four shots each visit: kitchen, main bath, the problem area, the entry. Before and after. They go to the client's folder in Google Drive.</p>
-    <div class="seg" id="pStage" style="margin-bottom:10px"><button data-v="Before" class="on">Before</button><button data-v="After">After</button></div>
-    <div class="chips" id="pRoom" style="margin-bottom:10px">
-      <button class="chip on" data-v="Kitchen">Kitchen</button><button class="chip" data-v="Main bath">Main bath</button><button class="chip" data-v="Problem area">Problem area</button><button class="chip" data-v="Entry">Entry</button><button class="chip" data-v="Bedroom">Bedroom</button><button class="chip" data-v="Living">Living</button><button class="chip" data-v="Other">Other</button>
-    </div>
-    <input type="file" id="pFile" accept="image/*" capture="environment" hidden>
-    <button class="btn" id="pTake">Take photo</button>
-    <p class="note" id="pStatus" style="margin-top:8px"></p>
-    <div class="photo-grid" id="pGrid" style="margin-top:10px"></div>
+    <div class="row"><button class="btn" id="dPhotos">Open photos for this home</button></div>
+    <p class="note" id="dPhotoCount" style="margin-top:8px"></p>
   </div>
 </section>
 
@@ -286,6 +291,34 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
   <div class="list" id="mList"></div>
 </section>
 
+<!-- PHOTOS -->
+<section class="screen" id="s-photos">
+  <h2>Photos</h2>
+  <p class="lead">Before and after, every visit. Each shot files itself by home, date, and room in Google Drive.</p>
+  <div class="grid g2">
+    <div><label for="pClient">Home</label><select id="pClient"></select></div>
+    <div><label for="pNewClient">Or type a name</label><input id="pNewClient" placeholder="Walk-through, 123 Oak"></div>
+  </div>
+  <h3>Stage</h3>
+  <div class="seg" id="pStage"><button data-v="Before" class="on">Before</button><button data-v="After">After</button></div>
+  <h3>Room</h3>
+  <div class="chips" id="pRoom">
+    <button class="chip on" data-v="Kitchen">Kitchen</button><button class="chip" data-v="Main bath">Main bath</button><button class="chip" data-v="Guest bath">Guest bath</button><button class="chip" data-v="Primary bedroom">Primary bedroom</button><button class="chip" data-v="Bedroom">Bedroom</button><button class="chip" data-v="Living">Living</button><button class="chip" data-v="Dining">Dining</button><button class="chip" data-v="Office">Office</button><button class="chip" data-v="Laundry">Laundry</button><button class="chip" data-v="Entry">Entry</button><button class="chip" data-v="Stairs">Stairs</button><button class="chip" data-v="Patio">Patio</button><button class="chip" data-v="Garage">Garage</button><button class="chip" data-v="Problem area">Problem area</button>
+  </div>
+  <div style="margin-top:10px"><label for="pRoomOther">Or name the room</label><input id="pRoomOther" placeholder="Mudroom"></div>
+  <input type="file" id="pFile" accept="image/*" capture="environment" hidden>
+  <button class="btn" id="pTake" style="margin-top:14px">Take photo</button>
+  <p class="note" id="pStatus" style="margin-top:8px"></p>
+  <p class="note">The four that matter most every visit: kitchen, main bath, the problem area, and the entry. Before, then after.</p>
+
+  <h3>Gallery</h3>
+  <div class="row" style="margin-bottom:10px">
+    <select id="gClient"><option value="">All homes</option></select>
+    <select id="gStage"><option value="">Before &amp; after</option><option>Before</option><option>After</option></select>
+  </div>
+  <div id="gallery"></div>
+</section>
+
 <!-- SNIPPETS -->
 <section class="screen" id="s-snip">
   <h2>Texts</h2>
@@ -318,12 +351,14 @@ hr{border:0;border-top:1px solid var(--line);margin:18px 0}
 </main>
 
 <nav>
+<nav>
   <button data-s="quote" class="on"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Quote</button>
-  <button data-s="clients"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Clients</button>
-  <button data-s="check"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Checklist</button>
-  <button data-s="money"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h3.5a1.75 1.75 0 010 3.5h-2a1.75 1.75 0 000 3.5H15"/></svg>Money</button>
-  <button data-s="snip"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Texts</button>
-  <button data-s="set"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>Setup</button>
+<button data-s="clients"><svg viewBox="0 0 24 24"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/></svg>Clients</button>
+<button data-s="photos"><svg viewBox="0 0 24 24"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>Photos</button>
+<button data-s="check"><svg viewBox="0 0 24 24"><path d="M5 12l4 4L19 6"/></svg>Checklist</button>
+<button data-s="money"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v10M9.5 9.5h3.5a1.75 1.75 0 010 3.5h-2a1.75 1.75 0 000 3.5H15"/></svg>Money</button>
+<button data-s="snip"><svg viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4z"/></svg>Texts</button>
+<button data-s="set" hidden><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/></svg>Setup</button>
 </nav>
 </div>
 <div class="toast" id="toast"></div>
@@ -398,7 +433,7 @@ async function pull(){
       clients = Object.values(byName).filter(c=>c.Name); LS.set('clients',clients);
     }
     if(j.payments){ payments = j.payments.map(p=>({Date:p.Date,Client:p.Client,Service:p.Service,Amount:Number(p.Amount)||0,Method:p.Method,Paid:p.Paid,PaidDate:p.PaidDate,synced:true})).concat(payments.filter(p=>!p.synced)); LS.set('payments',payments); }
-    if(j.photos){ photos = j.photos.map(p=>({date:p.Date,client:p.Client,stage:p.Stage,room:p.Room,url:p.DriveUrl,sent:true})).concat(photos.filter(p=>!p.sent)); LS.set('photos',photos); }
+    if(j.photos){ const keyOf=p=>[p.client,p.date,p.stage,p.room].join('|'); const thumbs={}; photos.forEach(p=>{ if(p.thumb) thumbs[keyOf(p)]=p.thumb; }); photos = j.photos.map(p=>{ const r={date:p.Date,client:p.Client,stage:p.Stage,room:p.Room,url:p.DriveUrl,sent:true}; if(thumbs[keyOf(r)]) r.thumb=thumbs[keyOf(r)]; return r; }).concat(photos.filter(p=>!p.sent)); LS.set('photos',photos); }
     if(j.snippets && j.snippets.length){ LS.set('snippets', j.snippets); }
     $('#setStatus').textContent='Synced '+new Date().toLocaleTimeString([], {hour:'numeric',minute:'2-digit'})+'. '+clients.length+' clients, '+payments.length+' payments, '+photos.length+' photos.';
     renderAll();
@@ -457,23 +492,42 @@ $('#dBack').onclick = ()=>{ $('#cDetail').hidden=true; $('#cList').hidden=false;
 $('#fSave').onclick = ()=>{ const name=$('#fName').value.trim(); if(!name){ toast('Name is needed'); return; }
   const c={Name:name,Phone:$('#fPhone').value.trim(),Address:$('#fAddress').value.trim(),Neighborhood:$('#fHood').value.trim(),Beds:$('#fBeds').value,Baths:$('#fBaths').value,SqFt:$('#fSqft').value,Frequency:$('#fFreq').value,Rate:$('#fRate').value,DayTime:$('#fDay').value.trim(),Entry:$('#fEntry').value.trim(),Pets:$('#fPets').value.trim(),Surfaces:$('#fSurfaces').value.trim(),Products:$('#fProducts').value.trim(),NeverTouch:$('#fNever').value.trim(),Arrival:$('#fArrival').value.trim(),OneThing:$('#fOne').value.trim(),PhotoOK:$('#fPhotoOK').value,Notes:$('#fNotes').value.trim(),Source:$('#fSource').value.trim(),Status:'Active'};
   const i=clients.findIndex(x=>x.Name.toLowerCase()===name.toLowerCase()); if(i>=0) clients[i]=Object.assign(clients[i],c); else clients.push(c); LS.set('clients',clients);
-  post('client', c); renderClients(); $('#cForm').hidden=true; $('#cList').hidden=false; toast('Client saved'); };
+  post('client', c); renderClients(); renderPhotoControls(); $('#cForm').hidden=true; $('#cList').hidden=false; toast('Client saved'); };
 function openClient(name){ const c=clients.find(x=>x.Name===name); if(!c) return; sel.client=c; $('#cList').hidden=true; $('#cDetail').hidden=false;
   $('#dName').textContent=c.Name; $('#dSub').textContent=[c.Address,c.Neighborhood,c.Frequency+(c.Rate?' · '+money(c.Rate):''),c.DayTime].filter(Boolean).join(' · ');
   const rows=[['Arrival',c.Arrival],['Never touch',c.NeverTouch],['Surfaces',c.Surfaces],['Products',c.Products],['Pets',c.Pets],['Entry',c.Entry],['The one thing',c.OneThing],['Notes',c.Notes],['Phone',c.Phone],['Photos for marketing',c.PhotoOK]].filter(r=>r[1]);
   $('#dNotes').innerHTML = rows.length? rows.map(r=>`<div class="price" style="padding:8px 0"><small style="flex:none;width:38%">${r[0]}</small><span style="text-align:right">${r[1]}</span></div>`).join('') : '<span class="note">No notes yet. Tap Add a client to fill them in.</span>';
   renderPhotos(); }
-function renderPhotos(){ if(!sel.client) return; const list=photos.filter(p=>p.client===sel.client.Name).sort((a,b)=>(b.date||'').localeCompare(a.date||''));
-  $('#pGrid').innerHTML = list.length? list.map(p=>`<a ${p.url?`href="${p.url}" target="_blank" rel="noopener"`:''}><b>${p.stage}</b> ${p.room}<span>${p.date}</span><span>${p.url?'Open in Drive':(p.sent?'Sent':'Waiting to send')}</span></a>`).join('') : '<p class="note">No photos yet.</p>'; }
+function photoClientName(){ const typed=$('#pNewClient').value.trim(); return typed || $('#pClient').value || 'Unfiled'; }
+function photoRoom(){ const typed=$('#pRoomOther').value.trim(); return typed || sel.room; }
+function renderPhotoControls(){ const names=[...new Set(clients.map(c=>c.Name).concat(photos.map(p=>p.client)))].filter(Boolean).sort();
+  const cur=$('#pClient').value; $('#pClient').innerHTML = names.map(n=>`<option>${n}</option>`).join('') || '<option value="">No homes yet</option>'; if(cur) $('#pClient').value=cur;
+  const gcur=$('#gClient').value; $('#gClient').innerHTML = '<option value="">All homes</option>'+names.map(n=>`<option>${n}</option>`).join(''); if(gcur) $('#gClient').value=gcur; }
+function renderGallery(){ const fc=$('#gClient').value, fs=$('#gStage').value;
+  let list=photos.filter(p=>(!fc||p.client===fc)&&(!fs||p.stage===fs));
+  if(!list.length){ $('#gallery').innerHTML='<p class="note">No photos yet. Take the first one above.</p>'; return; }
+  const byClient={}; list.forEach(p=>{ (byClient[p.client]=byClient[p.client]||[]).push(p); });
+  $('#gallery').innerHTML = Object.keys(byClient).sort().map(cn=>{ const byDate={}; byClient[cn].forEach(p=>{ (byDate[p.date]=byDate[p.date]||[]).push(p); });
+    return `<div class="gal-group"><h4>${cn}</h4>`+Object.keys(byDate).sort().reverse().map(d=>{ const items=byDate[d].sort((a,b)=>(a.room||'').localeCompare(b.room||'')||(a.stage==='Before'?-1:1));
+      return `<div class="d">${d}</div><div class="gal">`+items.map(p=>`<a class="${p.stage.toLowerCase()}" ${p.url&&p.url!=='#'?`href="${p.url}" target="_blank" rel="noopener"`:''}>${p.thumb?`<img src="${p.thumb}" alt="">`:`<div class="nothumb">${p.url?'Open in Drive':'On this phone'}</div>`}<div class="lbl"><b>${p.stage}</b>${p.room}</div>${p.sent?'':'<span class="pend" title="Waiting to send"></span>'}</a>`).join('')+`</div>`; }).join('')+`</div>`; }).join('');
+}
+function renderPhotos(){ renderPhotoControls(); renderGallery(); if(sel.client){ const n=photos.filter(p=>p.client===sel.client.Name).length; $('#dPhotoCount').textContent = n? n+' photo'+(n>1?'s':'')+' on file.' : 'No photos yet.'; } }
+$('#dPhotos').onclick=()=>{ $('#pClient').value=sel.client.Name; $('#gClient').value=sel.client.Name; $$('nav button').find(b=>b.dataset.s==='photos').click(); renderGallery(); };
+$('#gClient').onchange=renderGallery; $('#gStage').onchange=renderGallery;
 $('#pStage').addEventListener('click', e=>{ const b=e.target.closest('button'); if(!b) return; sel.stage=b.dataset.v; $$('#pStage button').forEach(x=>x.classList.toggle('on',x===b)); });
-$('#pRoom').addEventListener('click', e=>{ const b=e.target.closest('.chip'); if(!b) return; sel.room=b.dataset.v; $$('#pRoom .chip').forEach(x=>x.classList.toggle('on',x===b)); });
-$('#pTake').onclick = ()=> $('#pFile').click();
+$('#pRoom').addEventListener('click', e=>{ const b=e.target.closest('.chip'); if(!b) return; sel.room=b.dataset.v; $('#pRoomOther').value=''; $$('#pRoom .chip').forEach(x=>x.classList.toggle('on',x===b)); });
+$('#pTake').onclick = ()=>{ if(!$('#pClient').value && !$('#pNewClient').value.trim()){ toast('Pick a home or type a name first'); return; } $('#pFile').click(); };
 $('#pFile').addEventListener('change', async e=>{ const f=e.target.files[0]; if(!f) return; $('#pStatus').textContent='Preparing…';
-  try{ const b64 = await shrink(f, 1600, 0.82); const rec={localId:Date.now()+'', date:today(), client:sel.client.Name, stage:sel.stage, room:sel.room, sent:false}; photos.push(rec); LS.set('photos',photos); renderPhotos();
-    post('photo', {localId:rec.localId, client:rec.client, date:rec.date, stage:rec.stage, room:rec.room, base64:b64}); $('#pStatus').textContent = endpoint? 'Sending to Drive…' : 'Saved on phone; will send once connected.'; toast(sel.stage+' · '+sel.room); }
+  try{ const {b64, thumb} = await shrink(f, 1600, 0.82); const rec={localId:Date.now()+'', date:today(), client:photoClientName(), stage:sel.stage, room:photoRoom(), sent:false, thumb};
+    photos.push(rec); trimThumbs(); LS.set('photos',photos); renderPhotos();
+    post('photo', {localId:rec.localId, client:rec.client, date:rec.date, stage:rec.stage, room:rec.room, base64:b64}); $('#pStatus').textContent = endpoint? 'Sending to Drive…' : 'Saved on phone; will send once connected.'; toast(rec.stage+' · '+rec.room);
+    if(sel.stage==='Before'){ /* stay on Before; she usually shoots several rooms */ } }
   catch(err){ $('#pStatus').textContent='Could not read the photo: '+err.message; }
   e.target.value=''; });
-function shrink(file, max, q){ return new Promise((res,rej)=>{ const img=new Image(); const u=URL.createObjectURL(file); img.onload=()=>{ const s=Math.min(1, max/Math.max(img.width,img.height)); const c=document.createElement('canvas'); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s); c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(u); res(c.toDataURL('image/jpeg',q).split(',')[1]); }; img.onerror=()=>rej(new Error('unsupported image')); img.src=u; }); }
+function trimThumbs(){ const withThumb=photos.filter(p=>p.thumb); if(withThumb.length>150){ withThumb.sort((a,b)=>(a.date||'').localeCompare(b.date||'')).slice(0,withThumb.length-150).forEach(p=>delete p.thumb); } }
+function shrink(file, max, q){ return new Promise((res,rej)=>{ const img=new Image(); const u=URL.createObjectURL(file); img.onload=()=>{
+  const draw=(m,qq)=>{ const sc=Math.min(1, m/Math.max(img.width,img.height)); const c=document.createElement('canvas'); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc); c.getContext('2d').drawImage(img,0,0,c.width,c.height); return c.toDataURL('image/jpeg',qq); };
+  const full=draw(max,q), thumb=draw(240,0.6); URL.revokeObjectURL(u); res({b64: full.split(',')[1], thumb}); }; img.onerror=()=>rej(new Error('unsupported image')); img.src=u; }); }
 
 /* ---------- checklist ---------- */
 const CL = {
@@ -549,8 +603,9 @@ $('#setClear').onclick=()=>{ const b=$('#setClear'); if(b.dataset.arm){ try{ Obj
 function renderSettings(){ $('#setPricing').textContent = (LS.get('pricing',null)? 'Loaded from the Sheet.' : 'Built-in defaults (Quill\'s draft). Connect to load the Sheet\'s Pricing tab.') + ' Biweekly = '+money(P.curve_base)+' + '+(P.curve_per_sqft*100).toFixed(0)+'¢ per sq ft · First Visit ×'+P.mult_first+' · move-out ×'+P.mult_moveout+' · hourly '+money(P.hourly)+'.'; }
 
 /* ---------- nav ---------- */
-$$('nav button').forEach(b=>b.onclick=()=>{ $$('nav button').forEach(x=>x.classList.toggle('on',x===b)); $$('.screen').forEach(s=>s.classList.toggle('on', s.id==='s-'+b.dataset.s)); LS.set('tab',b.dataset.s); $('main').scrollTop=0; if(b.dataset.s==='check') renderCheck(); });
-function renderAll(){ renderAddons(); calcQuote(); renderClients(); renderCheck(); renderMoney(); renderSnips(); renderSettings(); setDot(); }
+$('#gear').onclick=()=>$$('nav button').find(b=>b.dataset.s==='set').click();
+$$('nav button').forEach(b=>b.onclick=()=>{ $$('nav button').forEach(x=>x.classList.toggle('on',x===b)); $$('.screen').forEach(s=>s.classList.toggle('on', s.id==='s-'+b.dataset.s)); LS.set('tab',b.dataset.s); $('main').scrollTop=0; if(b.dataset.s==='check') renderCheck(); if(b.dataset.s==='photos') renderPhotos(); });
+function renderAll(){ renderAddons(); calcQuote(); renderClients(); renderCheck(); renderMoney(); renderSnips(); renderSettings(); renderPhotos(); setDot(); }
 renderAll();
 const lastTab=LS.get('tab','quote'); const nb=$$('nav button').find(b=>b.dataset.s===lastTab); if(nb) nb.click();
 window.addEventListener('online', flush);
